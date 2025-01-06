@@ -1,4 +1,6 @@
 import { FC, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { useTitle } from 'ahooks';
 import QuestionCard from '../../components/QuestionCard';
 import styles from './List.module.scss';
 
@@ -30,7 +32,13 @@ const rowQuestionList = [
 ];
 
 const List: FC = () => {
+  useTitle('小慕问卷 - 我的问卷');
+
   const [questionList, setQuestionList] = useState(rowQuestionList);
+
+  const [searchParams] = useSearchParams();
+  const keyword = searchParams.get('keyword') || '';
+  console.log(keyword);
   return (
     <>
       <div className={styles.header}>
