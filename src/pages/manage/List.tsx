@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import QuestionCard from '../components/QuestionCard';
+import QuestionCard from '../../components/QuestionCard';
 import styles from './List.module.scss';
 
 const rowQuestionList = [
