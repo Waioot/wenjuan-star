@@ -1,6 +1,6 @@
 import { useTitle } from 'ahooks';
 import { useState } from 'react';
-import { Empty, Typography, Divider } from 'antd';
+import { Empty, Typography } from 'antd';
 import QuestionCard from '../../components/QuestionCard';
 import styles from './common.module.scss';
 
