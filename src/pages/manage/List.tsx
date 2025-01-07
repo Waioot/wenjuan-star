@@ -1,19 +1,17 @@
 import { FC } from 'react';
 import { useTitle } from 'ahooks';
-import { useRequest } from 'ahooks';
 
 import QuestionCard from '../../components/QuestionCard';
 import styles from './common.module.scss';
 import { Typography, Spin } from 'antd';
 import ListSearch from '../../components/ListSearch';
-import { getQuestionListService } from '../../services/question';
-
+import useLoadQuestionListData from '../../hooks/useLoadQuestionListData';
 const { Title } = Typography;
 
 const List: FC = () => {
   useTitle('小慕问卷 - 我的问卷');
 
-  const { data = {}, loading } = useRequest(getQuestionListService);
+  const { loading, data = {} } = useLoadQuestionListData();
   const { list: questionList = [], total = 0 } = data;
 
   return (

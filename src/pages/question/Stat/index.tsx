@@ -1,7 +1,7 @@
 import useLoadQuestionData from '../../../hooks/useLoadQuestionData';
 
 function Stat() {
-  const { loading, questionData } = useLoadQuestionData();
+  const { loading, data: questionData } = useLoadQuestionData();
   return (
     <div>
       <h1>Stat page</h1>

@@ -22,5 +22,5 @@ export default function useLoadQuestionData() {
     return data;
   }
   const { data, loading, error } = useRequest(load);
-  return { loading, questionData: data, error };
+  return { loading, data, error };
 }
