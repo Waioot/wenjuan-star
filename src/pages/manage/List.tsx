@@ -40,8 +40,7 @@ const List: FC = () => {
   const [questionList, setQuestionList] = useState(rowQuestionList);
 
   const [searchParams] = useSearchParams();
-  const keyword = searchParams.get('keyword') || '';
-  console.log(keyword);
+  // const keyword = searchParams.get('keyword') || '';
   return (
     <>
       <div className={styles.header}>
