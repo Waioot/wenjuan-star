@@ -67,11 +67,31 @@ function Login() {
           }}
           form={form}
         >
-          <Form.Item label='用户名' name='username'>
+          <Form.Item
+            label='用户名'
+            name='username'
+            rules={[
+              { required: true, message: '请输入用户名' },
+              {
+                type: 'string',
+                min: 4,
+                max: 16,
+                message: '用户名长度为4-16位 且只能包含字母、数字和下划线',
+              },
+              {
+                pattern: /^[a-zA-Z0-9_]+$/,
+                message: '用户名只能包含字母、数字和下划线',
+              },
+            ]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item label='密码' name='password'>
-            <Input />
+          <Form.Item
+            label='密码'
+            name='password'
+            rules={[{ required: true, message: '请输入密码' }]}
+          >
+            <Input.Password />
           </Form.Item>
           <Form.Item
             wrapperCol={{ span: 16, offset: 6 }}

@@ -32,14 +32,49 @@ function Register() {
           wrapperCol={{ span: 16 }}
           onFinish={onFinish}
         >
-          <Form.Item label='用户名' name='username'>
+          <Form.Item
+            label='用户名'
+            name='username'
+            rules={[
+              { required: true, message: '请输入用户名' },
+              {
+                type: 'string',
+                min: 4,
+                max: 16,
+                message: '用户名长度为4-16位 且只能包含字母、数字和下划线',
+              },
+              {
+                pattern: /^[a-zA-Z0-9_]+$/,
+                message: '用户名只能包含字母、数字和下划线',
+              },
+            ]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item label='密码' name='password'>
-            <Input />
+          <Form.Item
+            label='密码'
+            name='password'
+            rules={[{ required: true, message: '请输入密码' }]}
+          >
+            <Input.Password />
           </Form.Item>
-          <Form.Item label='确认密码' name='confirmPassword'>
-            <Input />
+          <Form.Item
+            label='确认密码'
+            name='confirmPassword'
+            dependencies={['password']}
+            rules={[
+              { required: true, message: '请确认密码' },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue('password') === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(new Error('两次密码不一致'));
+                },
+              }),
+            ]}
+          >
+            <Input.Password />
           </Form.Item>
           <Form.Item label='昵称' name='nickname'>
             <Input />
