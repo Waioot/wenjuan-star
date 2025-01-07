@@ -2,14 +2,14 @@ import { FC, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useTitle } from 'ahooks';
 import QuestionCard from '../../components/QuestionCard';
-import styles from './List.module.scss';
+import styles from './common.module.scss';
 
 const rowQuestionList = [
   {
     _id: 'q1',
     title: 'Question 1',
     isPublished: false,
-    isStar: false,
+    isStar: true,
     answerCount: 5,
     createdAt: '2021-01-01',
   },
@@ -48,12 +48,13 @@ const List: FC = () => {
         <div className={styles.right}>(搜索)</div>
       </div>
       <div className={styles.content}>
-        {questionList.map(q => {
-          const { _id } = q;
-          return <QuestionCard key={_id} {...q} />;
-        })}
+        {questionList.length > 0 &&
+          questionList.map(q => {
+            const { _id } = q;
+            return <QuestionCard key={_id} {...q} />;
+          })}
       </div>
-      <div className={styles.footer}>footer</div>
+      <div className={styles.footer}>loadMore 上滑加载更多</div>
     </>
   );
 };
