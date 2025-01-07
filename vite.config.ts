@@ -14,4 +14,18 @@ export default defineConfig({
       },
     },
   },
+
+  server: {
+    open: true, // 是否自动打开浏览器
+    port: 3000, // 端口号
+
+    // 代理解决跨域
+    proxy: {
+      '/api': {
+        target: 'http://127.0.0.1:3001', // 接口源地址
+        changeOrigin: true, // 开启跨域
+        rewrite: path => path.replace('/^/api/', ''),
+      },
+    },
+  },
 });
