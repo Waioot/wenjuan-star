@@ -10,24 +10,37 @@ import {
 } from '@ant-design/icons';
 import { Button, Space, Divider } from 'antd';
 import { createQuestionService } from '../services/question';
+import { useRequest } from 'ahooks';
 import { useNavigate } from 'react-router-dom';
 
 function Mainlayout() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
 
-  const handleCreateQuestion = async () => {
-    setLoading(true);
-    const data = await createQuestionService();
-    if (data?.id) {
-      navigate(`/question/edit/${data.id}`);
-      message.success('创建问卷成功');
-    } else {
-      message.error('创建问卷失败');
+  // const [loading, setLoading] = useState(false);
+  // const handleCreateQuestion = async () => {
+  //   setLoading(true);
+  //   const data = await createQuestionService();
+  //   if (data?.id) {
+  //     navigate(`/question/edit/${data.id}`);
+  //     message.success('创建问卷成功');
+  //   } else {
+  //     message.error('创建问卷失败');
+  //   }
+  //   setLoading(false);
+  // };
+
+  const { loading, run: handleCreateQuestion } = useRequest(
+    createQuestionService,
+    {
+      manual: true,
+      onSuccess: res => {
+        navigate(`/question/edit/${res.id}`);
+        message.success('创建问卷成功');
+      },
     }
-    setLoading(false);
-  };
+  );
+
   return (
     <div className={styles.container}>
       <div className={styles.left}>
