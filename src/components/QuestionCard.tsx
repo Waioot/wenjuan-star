@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Space, Button, Divider, Tag } from 'antd';
+import { Space, Button, Divider, Tag, Popconfirm, message, Modal } from 'antd';
 import { Link } from 'react-router-dom';
 import {
   StarOutlined,
@@ -19,6 +19,8 @@ type PropsType = {
   createdAt: string;
 };
 
+const { confirm } = Modal;
+
 const QuestionCard: FC<PropsType> = ({
   _id,
   title,
@@ -27,6 +29,20 @@ const QuestionCard: FC<PropsType> = ({
   answerCount,
   createdAt,
 }) => {
+  function handleCopy() {
+    message.success('复制成功');
+  }
+  function handleDelete() {
+    confirm({
+      title: '确定要删除吗？',
+      okText: '确定',
+      cancelText: '取消',
+      onOk: () => {
+        message.success('删除成功');
+      },
+    });
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.title}>
@@ -79,10 +95,22 @@ const QuestionCard: FC<PropsType> = ({
             <Button type='text' size='small' icon={<StarOutlined />}>
               {isStar ? '取消标星' : '标星'}
             </Button>
-            <Button type='text' size='small' icon={<CopyOutlined />}>
-              复制
-            </Button>
-            <Button type='text' size='small' icon={<DeleteOutlined />}>
+            <Popconfirm
+              title='确定要复制吗？'
+              okText='确定'
+              cancelText='取消'
+              onConfirm={handleCopy}
+            >
+              <Button type='text' size='small' icon={<CopyOutlined />}>
+                复制
+              </Button>
+            </Popconfirm>
+            <Button
+              type='text'
+              size='small'
+              icon={<DeleteOutlined />}
+              onClick={handleDelete}
+            >
               删除
             </Button>
           </Space>
