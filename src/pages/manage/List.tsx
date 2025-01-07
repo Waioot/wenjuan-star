@@ -1,46 +1,21 @@
-import { FC, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { FC } from 'react';
 import { useTitle } from 'ahooks';
+import { useRequest } from 'ahooks';
+
 import QuestionCard from '../../components/QuestionCard';
 import styles from './common.module.scss';
-import { Typography } from 'antd';
+import { Typography, Spin } from 'antd';
 import ListSearch from '../../components/ListSearch';
-const { Title } = Typography;
+import { getQuestionListService } from '../../services/question';
 
-const rowQuestionList = [
-  {
-    _id: 'q1',
-    title: 'Question 1',
-    isPublished: false,
-    isStar: true,
-    answerCount: 5,
-    createdAt: '2021-01-01',
-  },
-  {
-    _id: 'q2',
-    title: 'Question 2',
-    isPublished: true,
-    isStar: false,
-    answerCount: 0,
-    createdAt: '2021-01-09',
-  },
-  {
-    _id: 'q3',
-    title: 'Question 3',
-    isPublished: false,
-    isStar: false,
-    answerCount: 0,
-    createdAt: '2021-01-04',
-  },
-];
+const { Title } = Typography;
 
 const List: FC = () => {
   useTitle('小慕问卷 - 我的问卷');
 
-  const [questionList, setQuestionList] = useState(rowQuestionList);
+  const { data = {}, loading } = useRequest(getQuestionListService);
+  const { list: questionList = [], total = 0 } = data;
 
-  const [searchParams] = useSearchParams();
-  // const keyword = searchParams.get('keyword') || '';
   return (
     <>
       <div className={styles.header}>
@@ -52,8 +27,14 @@ const List: FC = () => {
         </div>
       </div>
       <div className={styles.content}>
-        {questionList.length > 0 &&
-          questionList.map(q => {
+        {loading && (
+          <div style={{ textAlign: 'center', marginTop: '20px' }}>
+            <Spin size='large' />
+          </div>
+        )}
+        {!loading &&
+          questionList.length > 0 &&
+          questionList.map((q: any) => {
             const { _id } = q;
             return <QuestionCard key={_id} {...q} />;
           })}
