@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Empty, Typography } from 'antd';
 import QuestionCard from '../../components/QuestionCard';
 import styles from './common.module.scss';
-
+import ListSearch from '../../components/ListSearch';
 const { Title } = Typography;
 
 const rowQuestionList = [
@@ -40,7 +40,12 @@ function Star() {
   return (
     <>
       <div className={styles.header}>
-        <Title level={3}>标星问卷</Title>
+        <div className={styles.left}>
+          <Title level={3}>标星问卷</Title>
+        </div>
+        <div className={styles.right}>
+          <ListSearch />
+        </div>
       </div>
       <div className={styles.content}>
         {/* 问卷列表 */}
