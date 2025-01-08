@@ -1,12 +1,19 @@
-import useLoadQuestionData from '../../../hooks/useLoadQuestionData';
-
+import styles from './index.module.scss';
 function Edit() {
-  const { loading, data: questionData } = useLoadQuestionData();
   return (
-    <div>
-      <h1>Edit page</h1>
-      {loading && <div>加载中...</div>}
-      {!loading && <div>{JSON.stringify(questionData)}</div>}
+    <div className={styles.container}>
+      <div style={{ backgroundColor: '#fff', height: '60px' }}>header</div>
+      <div className={styles['content-wrapper']}>
+        <div className={styles.content}>
+          <div className={styles.left}>left</div>
+          <div className={styles.main}>
+            <div className={styles['canvas-wrapper']}>
+              <div style={{ height: '1000px' }}>测试滚动</div>
+            </div>
+          </div>
+          <div className={styles.right}>right</div>
+        </div>
+      </div>
     </div>
   );
 }

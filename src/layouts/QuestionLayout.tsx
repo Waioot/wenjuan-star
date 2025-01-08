@@ -7,8 +7,7 @@ const QuestionLayout = () => {
   const { waitingUserData } = useLoadUserData();
   useNavPage(waitingUserData);
   return (
-    <div className={styles.container}>
-      <p>QuestionLayout</p>
+    <div style={{ height: '100vh' }}>
       {waitingUserData ? (
         <div style={{ textAlign: 'center', marginTop: '60px' }}>
           <Spin />
