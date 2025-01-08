@@ -5,10 +5,12 @@ import { Layout } from 'antd';
 import Logo from '../components/Logo';
 import UserInfo from '../components/UserInfo';
 import useLoadUserData from '../hooks/useLoadUserData';
+import useNavPage from '../hooks/useNavPage';
 const { Header, Footer, Content } = Layout;
 
 function MainLayout() {
   const { waitingUserData } = useLoadUserData();
+  useNavPage(waitingUserData);
   return (
     <Layout>
       <Header className={styles.header}>
