@@ -4,50 +4,82 @@ import styles from './Login.module.scss';
 import { REGISTER_PATHNAME } from '../router';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
+import { useRequest } from 'ahooks';
+import { loginService } from '../services/user';
+import { setToken } from '../utils/user-token';
+import { useNavigate } from 'react-router-dom';
+import { MANAGE_LIST_PATHNAME } from '../router';
+import { message } from 'antd';
 const { Title } = Typography;
 
-interface LoginFormValues {
-  username: string;
-  password: string;
-  remember: boolean;
-}
+type loginType = {
+  password?: string;
+  remember?: boolean;
+  username?: string;
+};
 
-function rememberUserInfo(values: LoginFormValues) {
-  if (values.remember) {
-    localStorage.setItem('username', values.username);
-    localStorage.setItem('password', values.password);
-  }
-}
-function deleteUserInfo() {
-  localStorage.removeItem('username');
-  localStorage.removeItem('password');
-}
+// 配置项
+const USERNAME_KEY = 'USERNAME';
+const PASSWORD_KEY = 'PASSWORD';
 
+function rememberUser(username: string, password: string) {
+  localStorage.setItem(USERNAME_KEY, username);
+  localStorage.setItem(PASSWORD_KEY, password);
+}
+function deleteUserFromStorage() {
+  localStorage.removeItem(USERNAME_KEY);
+  localStorage.removeItem(PASSWORD_KEY);
+}
 function getUserInfoFromLocalStorage() {
   return {
-    username: localStorage.getItem('username'),
-    password: localStorage.getItem('password'),
+    username: localStorage.getItem(USERNAME_KEY),
+    password: localStorage.getItem(PASSWORD_KEY),
   };
 }
 
 function Login() {
-  const [form] = Form.useForm();
+  const [form] = Form.useForm(); // 第三方 hook, 用于表单的双向绑定
 
   useEffect(() => {
     const userInfo = getUserInfoFromLocalStorage();
     if (userInfo.username && userInfo.password) {
       form.setFieldsValue(userInfo);
     }
-  }, []);
+  }, [form]);
 
-  function onFinish(values: LoginFormValues) {
-    if (values.remember) {
-      rememberUserInfo(values);
-    } else {
-      deleteUserInfo();
+  // 请求后端
+  const navigate = useNavigate();
+  const { run } = useRequest(
+    async (username: string, password: string) => {
+      return await loginService(username, password);
+    },
+    {
+      manual: true,
+      onSuccess(result?: any) {
+        // data会返回token，这里可以存储token
+        const { token = '' } = result;
+        setToken(token); // 存储 token
+        message.success('登录成功');
+        navigate(MANAGE_LIST_PATHNAME); // 导航到“我的问卷”
+      },
     }
+  );
+
+  // 表单提交
+  const onFinish = (values: loginType) => {
+    const { username, password, remember } = values || {};
+
+    run(username as string, password as string); // 执行 ajax
     console.log(values);
-  }
+
+    if (remember) {
+      // 本地记住用户信息
+      rememberUser(username as string, password as string);
+    } else {
+      // 删除用户信息
+      deleteUserFromStorage();
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -57,7 +89,7 @@ function Login() {
         </Title>
         <Title level={2}>登录</Title>
       </Space>
-      <div className={styles.form}>
+      <div>
         <Form
           labelCol={{ span: 6 }}
           wrapperCol={{ span: 16 }}
