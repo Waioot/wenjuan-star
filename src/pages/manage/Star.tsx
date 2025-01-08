@@ -1,41 +1,16 @@
 import { useTitle } from 'ahooks';
-import { useState } from 'react';
-import { Empty, Typography } from 'antd';
+import { Typography, Spin, Empty } from 'antd';
 import QuestionCard from '../../components/QuestionCard';
 import styles from './common.module.scss';
 import ListSearch from '../../components/ListSearch';
+import useLoadQuestionListData from '../../hooks/useLoadQuestionListData';
 const { Title } = Typography;
 
-const rowQuestionList = [
-  {
-    _id: 'q1',
-    title: 'Question 1',
-    isPublished: false,
-    isStar: true,
-    answerCount: 5,
-    createdAt: '2021-01-01',
-  },
-  {
-    _id: 'q2',
-    title: 'Question 2',
-    isPublished: true,
-    isStar: true,
-    answerCount: 0,
-    createdAt: '2021-01-09',
-  },
-  {
-    _id: 'q3',
-    title: 'Question 3',
-    isPublished: false,
-    isStar: true,
-    answerCount: 0,
-    createdAt: '2021-01-04',
-  },
-];
 function Star() {
   useTitle('小慕问卷 - 标星问卷');
 
-  const [questionList, setQuestionList] = useState(rowQuestionList);
+  const { loading, data = {} } = useLoadQuestionListData({ isStar: true });
+  const { list: questionList = [], total = 0 } = data;
 
   return (
     <>
@@ -48,10 +23,18 @@ function Star() {
         </div>
       </div>
       <div className={styles.content}>
+        {loading && (
+          <div style={{ textAlign: 'center', marginTop: '20px' }}>
+            <Spin size='large' />
+          </div>
+        )}
         {/* 问卷列表 */}
-        {questionList.length === 0 && <Empty description='暂无数据' />}
-        {questionList.length > 0 &&
-          questionList.map(q => <QuestionCard key={q._id} {...q} />)}
+        {!loading && questionList.length === 0 && (
+          <Empty description='暂无数据' />
+        )}
+        {!loading &&
+          questionList.length > 0 &&
+          questionList.map((q: any) => <QuestionCard key={q._id} {...q} />)}
       </div>
       <div className={styles.footer}>分页 </div>
     </>

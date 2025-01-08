@@ -8,6 +8,7 @@ import {
   Typography,
   Modal,
   message,
+  Spin,
 } from 'antd';
 import { useState } from 'react';
 import ListSearch from '../../components/ListSearch';
@@ -16,41 +17,15 @@ import {
   ExclamationCircleOutlined,
   CheckCircleOutlined,
 } from '@ant-design/icons';
-
+import useLoadQuestionListData from '../../hooks/useLoadQuestionListData';
 const { Title } = Typography;
 
 const { confirm } = Modal;
 
-const rowQuestionList = [
-  {
-    _id: 'q1',
-    title: 'Question 1',
-    isPublished: false,
-    isStar: true,
-    answerCount: 5,
-    createdAt: '2021-01-01',
-  },
-  {
-    _id: 'q2',
-    title: 'Question 2',
-    isPublished: true,
-    isStar: true,
-    answerCount: 0,
-    createdAt: '2021-01-09',
-  },
-  {
-    _id: 'q3',
-    title: 'Question 3',
-    isPublished: false,
-    isStar: false,
-    answerCount: 0,
-    createdAt: '2021-01-04',
-  },
-];
-
 function Trash() {
   useTitle('小慕问卷 - 回收站');
-  const [questionList, setQuestionList] = useState(rowQuestionList);
+  const { loading, data = {} } = useLoadQuestionListData({ isDeleted: true });
+  const { list: rowQuestionList = [], total = 0 } = data;
   const [selectedQuestionIds, setSelectedQuestionIds] = useState<string[]>([]);
 
   const handleRestore = () => {
@@ -112,8 +87,15 @@ function Trash() {
         </div>
       </div>
       <div className={styles.content}>
-        {questionList.length === 0 && <Empty description='暂无数据' />}
-        {questionList.length > 0 && (
+        {loading && (
+          <div style={{ textAlign: 'center', marginTop: '20px' }}>
+            <Spin size='large' />
+          </div>
+        )}
+        {!loading && rowQuestionList.length === 0 && (
+          <Empty description='暂无数据' />
+        )}
+        {!loading && rowQuestionList.length > 0 && (
           <>
             <div style={{ marginBottom: '16px' }}>
               <Space>
@@ -135,7 +117,7 @@ function Trash() {
             </div>
             <Table
               columns={columns}
-              dataSource={questionList}
+              dataSource={rowQuestionList}
               pagination={false}
               rowKey={q => q._id}
               rowSelection={{
