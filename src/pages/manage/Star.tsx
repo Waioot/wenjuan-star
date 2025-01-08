@@ -4,6 +4,7 @@ import QuestionCard from '../../components/QuestionCard';
 import styles from './common.module.scss';
 import ListSearch from '../../components/ListSearch';
 import useLoadQuestionListData from '../../hooks/useLoadQuestionListData';
+import ListPagination from '../../components/ListPagination';
 const { Title } = Typography;
 
 function Star() {
@@ -36,7 +37,9 @@ function Star() {
           questionList.length > 0 &&
           questionList.map((q: any) => <QuestionCard key={q._id} {...q} />)}
       </div>
-      <div className={styles.footer}>分页 </div>
+      <div className={styles.footer}>
+        <ListPagination total={total} />
+      </div>
     </>
   );
 }

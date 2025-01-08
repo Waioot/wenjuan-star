@@ -12,6 +12,7 @@ import {
 } from 'antd';
 import { useState } from 'react';
 import ListSearch from '../../components/ListSearch';
+import ListPagination from '../../components/ListPagination';
 import styles from './common.module.scss';
 import {
   ExclamationCircleOutlined,
@@ -119,7 +120,7 @@ function Trash() {
               columns={columns}
               dataSource={rowQuestionList}
               pagination={false}
-              rowKey={q => q._id}
+              rowKey={(q: any) => q._id}
               rowSelection={{
                 type: 'checkbox',
                 onChange: selectedRowKeys => {
@@ -130,7 +131,9 @@ function Trash() {
           </>
         )}
       </div>
-      <div className={styles.footer}>分页</div>
+      <div className={styles.footer}>
+        <ListPagination total={total} />
+      </div>
     </>
   );
 }
