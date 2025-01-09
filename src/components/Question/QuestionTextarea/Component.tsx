@@ -1,22 +1,23 @@
 import { Typography, Input } from 'antd';
-import { QuestionInputPropsType } from './interface';
+import { QuestionTextareaPropsType } from './interface';
 
 const { Paragraph } = Typography;
+const { TextArea } = Input;
 
-function QuestionInput({
-  title = '单行输入框',
+function QuestionTextarea({
+  title = '多行输入框',
   placeholder = '请输入...',
-}: QuestionInputPropsType) {
+}: QuestionTextareaPropsType) {
   return (
     <div>
       <Paragraph strong style={{ marginBottom: 0 }}>
         {title}
       </Paragraph>
       <div>
-        <Input placeholder={placeholder} />
+        <TextArea placeholder={placeholder} />
       </div>
     </div>
   );
 }
 
-export default QuestionInput;
+export default QuestionTextarea;
