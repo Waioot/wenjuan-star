@@ -36,20 +36,22 @@ function EditCavas({ loading }: EditCavasPropsType) {
     );
   return (
     <div className={styles.cavas}>
-      {componentList.map((c: ComponentInfoType) => {
-        const { fe_id } = c;
-        return (
-          <div
-            className={classNames(styles['component-wrapper'], {
-              [styles.selected]: fe_id === selectedId,
-            })}
-            key={fe_id}
-            onClick={e => handleClick(e, fe_id)}
-          >
-            <div className={styles.components}>{getComponent(c)}</div>
-          </div>
-        );
-      })}
+      {componentList
+        .filter(c => !c.isHidden)
+        .map((c: ComponentInfoType) => {
+          const { fe_id } = c;
+          return (
+            <div
+              className={classNames(styles['component-wrapper'], {
+                [styles.selected]: fe_id === selectedId,
+              })}
+              key={fe_id}
+              onClick={e => handleClick(e, fe_id)}
+            >
+              <div className={styles.components}>{getComponent(c)}</div>
+            </div>
+          );
+        })}
     </div>
   );
 }
