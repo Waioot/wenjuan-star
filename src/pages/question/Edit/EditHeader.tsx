@@ -3,7 +3,7 @@ import { Button, Space } from 'antd';
 import { LeftOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { Typography } from 'antd';
-
+import EditToolbar from './EditToolBar';
 const { Title } = Typography;
 
 function EditHeader() {
@@ -24,7 +24,9 @@ function EditHeader() {
             <Title>问卷标题</Title>
           </Space>
         </div>
-        <div className={styles.center}>center</div>
+        <div className={styles.center}>
+          <EditToolbar />
+        </div>
         <div className={styles.right}>
           <Space>
             <Button>保存</Button>
