@@ -1,13 +1,15 @@
 import { useSelector } from 'react-redux';
 import { StateType } from '../store';
-import { ComponentInfoType } from '../store/componentsReducer';
-function useGetComponentInfo() {
-  const components = useSelector<StateType>(
-    state => state.components.componentList as ComponentInfoType[]
-  );
-  const { componentList = [] } = components;
+import { ComponentsStateType } from '../store/componentsReducer';
 
-  return { componentList };
+function useGetComponentInfo() {
+  const components = useSelector<StateType, ComponentsStateType>(
+    state => state.components
+  );
+
+  const { componentList = [], selectedId = '' } = components;
+
+  return { componentList, selectedId };
 }
 
 export default useGetComponentInfo;
