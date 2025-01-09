@@ -1,0 +1,16 @@
+.wapper {
+  margin-bottom: 12px;
+  cursor: pointer;
+  background-color: #fff;
+  border: 1px solid #fff;
+  padding: 12px;
+  border-radius: 4px;
+
+  &:hover {
+    border: 1px solid #e8e8e8;
+  }
+}
+
+.component {
+  pointer-events: none;
+}
