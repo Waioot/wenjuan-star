@@ -1,26 +1,40 @@
+import { useEffect } from 'react';
+
+import { useDispatch } from 'react-redux';
+import { resetComponents } from '../store/componentsReducer';
+import { useParams } from 'react-router-dom';
 import { getQuestionService } from '../services/question';
 import { useRequest } from 'ahooks';
-import { useParams } from 'react-router-dom';
 export default function useLoadQuestionData() {
   const { id = '' } = useParams();
-  //   const [loading, setLoading] = useState(false);
-  //   const [questionData, setQuestionData] = useState({});
-  //   useEffect(() => {
-  //     async function fetchData() {
-  //       setLoading(true);
-  //       const res = await getQuestionService(id as string);
-  //       setQuestionData(res);
-  //       setLoading(false);
-  //     }
-  //     fetchData();
-  //   }, []);
-  //   return { loading, questionData };
+  const dispatch = useDispatch();
 
-  // 使用useRequest重构
-  async function load() {
-    const data = await getQuestionService(id as string);
-    return data;
-  }
-  const { data, loading, error } = useRequest(load);
-  return { loading, data, error };
+  // 加载数据
+  const { data, loading, error, run } = useRequest(
+    async (id: string) => {
+      if (!id) throw new Error('id is required');
+      const data = await getQuestionService(id);
+      return data;
+    },
+    {
+      manual: true,
+    }
+  );
+
+  // id变化时，加载数据
+  useEffect(() => {
+    run(id);
+  }, [id]);
+
+  // 将数据存储到redux中
+  useEffect(() => {
+    if (data) {
+      const { title, componentList } = data;
+
+      // 将componentList存储到redux中
+      dispatch(resetComponents({ componentList }));
+    }
+  }, [data]);
+
+  return { loading, error };
 }
