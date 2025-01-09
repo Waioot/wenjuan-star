@@ -138,6 +138,27 @@ const componentsSlice = createSlice({
       // 插入组件
       insertNewComponent(state, state.copiedComponent);
     },
+    // 选中上一个组件
+    selectPrevComponent: state => {
+      const selectedIndex = state.componentList.findIndex(
+        c => c.fe_id === state.selectedId
+      );
+
+      if (selectedIndex < 0) return; // 如果没选中组件，则不进行任何操作
+      if (selectedIndex <= 0) return; // 如果当前组件是第一个组件，则不进行任何操作
+
+      state.selectedId = state.componentList[selectedIndex - 1].fe_id;
+    },
+    // 选中下一个组件
+    selectNextComponent: state => {
+      const selectedIndex = state.componentList.findIndex(
+        c => c.fe_id === state.selectedId
+      );
+      if (selectedIndex < 0) return; // 如果没选中组件，则不进行任何操作
+      if (selectedIndex + 1 === state.componentList.length) return; // 如果当前组件是最后一个组件，则不进行任何操作
+      state.selectedId = state.componentList[selectedIndex + 1].fe_id;
+    },
+    // TODO 上移、下移、撤销、重做
   },
 });
 
@@ -151,5 +172,7 @@ export const {
   toggleSelectedComponentLock,
   copySelectedComponent,
   pasteCopiedComponent,
+  selectPrevComponent,
+  selectNextComponent,
 } = componentsSlice.actions;
 export default componentsSlice.reducer;

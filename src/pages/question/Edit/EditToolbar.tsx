@@ -43,6 +43,9 @@ const EditToolbar = () => {
     if (!copiedComponent) return;
     dispatch(pasteCopiedComponent());
   }
+
+  // TODO 上移、下移、撤销、重做
+
   return (
     <Space>
       <Tooltip title='删除'>

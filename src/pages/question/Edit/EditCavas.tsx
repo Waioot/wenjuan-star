@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import { ComponentInfoType } from '../../../store/componentsReducer';
 import { getComponentConfigByType } from '../../../components/Question';
 import { changeSelectedId } from '../../../store/componentsReducer';
+import useBindCanvasKeyPress from '../../../hooks/useBindCanvasKeyPress';
 
 type EditCavasPropsType = {
   loading: boolean;
@@ -27,6 +28,9 @@ function EditCavas({ loading }: EditCavasPropsType) {
     event.stopPropagation(); // 阻止事件冒泡
     dispatch(changeSelectedId(id));
   }
+
+  // 绑定快捷键
+  useBindCanvasKeyPress();
 
   if (loading)
     return (
