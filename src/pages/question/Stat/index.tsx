@@ -1,12 +1,12 @@
-import useLoadQuestionData from '../../../hooks/useLoadQuestionData';
+// import useLoadQuestionData from '../../../hooks/useLoadQuestionData';
 
 function Stat() {
-  const { loading, data: questionData } = useLoadQuestionData();
+  // const { loading, data: questionData } = useLoadQuestionData();
   return (
     <div>
       <h1>Stat page</h1>
-      {loading && <div>加载中...</div>}
-      {!loading && <div>{JSON.stringify(questionData)}</div>}
+      {/* {loading && <div>加载中...</div>}
+      {!loading && <div>{JSON.stringify(questionData)}</div>} */}
     </div>
   );
 }

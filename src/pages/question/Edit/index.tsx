@@ -12,7 +12,7 @@ function Edit() {
           <div className={styles.left}>left</div>
           <div className={styles.main}>
             <div className={styles['canvas-wrapper']}>
-              <EditCavas />
+              <EditCavas loading={loading} />
             </div>
           </div>
           <div className={styles.right}>right</div>
