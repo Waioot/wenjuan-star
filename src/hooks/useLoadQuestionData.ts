@@ -29,10 +29,16 @@ export default function useLoadQuestionData() {
   // 将数据存储到redux中
   useEffect(() => {
     if (data) {
-      const { title, componentList } = data;
+      const { componentList } = data;
+
+      // 默认选中第一个
+      let selectedId = '';
+      if (componentList.length > 0) {
+        selectedId = componentList[0].fe_id;
+      }
 
       // 将componentList存储到redux中
-      dispatch(resetComponents({ componentList }));
+      dispatch(resetComponents({ componentList, selectedId }));
     }
   }, [data]);
 
