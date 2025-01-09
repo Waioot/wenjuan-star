@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { ComponentPropsType } from '../../components/Question';
-
+import { getNextSelectedComponentId } from './utils';
 // 单个组件类型
 export type ComponentInfoType = {
   fe_id: string;
@@ -72,8 +72,17 @@ const componentsSlice = createSlice({
       const selectedIndex = state.componentList.findIndex(
         c => c.fe_id === state.selectedId
       );
+
+      // 重新计算 selectedId
+      const newSelectedId = getNextSelectedComponentId(
+        state.selectedId,
+        state.componentList
+      );
+
       if (selectedIndex < 0) return;
       state.componentList.splice(selectedIndex, 1);
+      // 更新选中 id
+      state.selectedId = newSelectedId;
     },
   },
 });

@@ -31,7 +31,7 @@ function EditCavas({ loading }: EditCavasPropsType) {
   if (loading)
     return (
       <div style={{ textAlign: 'center', marginTop: '20px' }}>
-        <Spin />;
+        <Spin />
       </div>
     );
   return (
