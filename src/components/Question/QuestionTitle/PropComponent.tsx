@@ -7,6 +7,7 @@ function PropComponent({
   level,
   isCenter,
   onChange,
+  disabled,
 }: QuestionTitlePropsType) {
   const [form] = Form.useForm();
 
@@ -26,6 +27,7 @@ function PropComponent({
       form={form}
       initialValues={{ text, level, isCenter }}
       onValuesChange={handleValuesChange}
+      disabled={disabled}
     >
       <Form.Item
         label='标题内容'

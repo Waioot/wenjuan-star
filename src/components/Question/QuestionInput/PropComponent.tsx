@@ -7,6 +7,7 @@ function PropComponent({
   title,
   placeholder,
   onChange,
+  disabled,
 }: QuestionInputPropsType) {
   const [form] = Form.useForm();
 
@@ -20,7 +21,12 @@ function PropComponent({
     }
   };
   return (
-    <Form layout='vertical' form={form} onValuesChange={handleValuesChange}>
+    <Form
+      layout='vertical'
+      form={form}
+      onValuesChange={handleValuesChange}
+      disabled={disabled}
+    >
       <Form.Item
         label='标题'
         name='title'
