@@ -4,6 +4,7 @@ import EditCavas from './EditCavas';
 import styles from './index.module.scss';
 import { changeSelectedId } from '../../../store/componentsReducer';
 import LeftPanel from './LeftPanel';
+import RightPanel from './RightPanel';
 function Edit() {
   const { loading } = useLoadQuestionData();
   const dispatch = useDispatch();
@@ -24,7 +25,9 @@ function Edit() {
               <EditCavas loading={loading} />
             </div>
           </div>
-          <div className={styles.right}>right</div>
+          <div className={styles.right}>
+            <RightPanel />
+          </div>
         </div>
       </div>
     </div>

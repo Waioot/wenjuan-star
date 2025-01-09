@@ -5,7 +5,7 @@ import styles from './EditCavas.module.scss';
 import useGetComponentInfo from '../../../hooks/useGetComponentInfo';
 import classNames from 'classnames';
 import { ComponentInfoType } from '../../../store/componentsReducer';
-import { getComponentConfig } from '../../../components/Question';
+import { getComponentConfigByType } from '../../../components/Question';
 import { changeSelectedId } from '../../../store/componentsReducer';
 
 type EditCavasPropsType = {
@@ -14,7 +14,7 @@ type EditCavasPropsType = {
 
 function getComponent(c: ComponentInfoType) {
   const { type, props } = c;
-  const componentConfig = getComponentConfig(type);
+  const componentConfig = getComponentConfigByType(type);
   if (!componentConfig) return null;
   const { Component } = componentConfig;
   return <Component {...props} />;
