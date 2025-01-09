@@ -20,6 +20,20 @@ export const componentListMap: ComponentConfigType[] = [
   QuestionInputConf,
 ];
 
+// 组件分组
+export const componentConfGroup = [
+  {
+    groupId: 'textDisplay',
+    groupName: '文本显示',
+    components: [QuestionTitleConf],
+  },
+  {
+    groupId: 'userInput',
+    groupName: '用户输入',
+    components: [QuestionInputConf],
+  },
+];
+
 // 根据组件类型获取组件配置
 export const getComponentConfig = (type: string) => {
   return componentListMap.find(c => c.type === type);
