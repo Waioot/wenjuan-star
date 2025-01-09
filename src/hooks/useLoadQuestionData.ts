@@ -38,7 +38,9 @@ export default function useLoadQuestionData() {
       }
 
       // 将componentList存储到redux中
-      dispatch(resetComponents({ componentList, selectedId }));
+      dispatch(
+        resetComponents({ componentList, selectedId, copiedComponent: null })
+      );
     }
   }, [data]);
 

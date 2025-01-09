@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { nanoid } from 'nanoid';
 import { ComponentPropsType } from '../../components/Question';
-import { getNextSelectedComponentId } from './utils';
+import { getNextSelectedComponentId, insertNewComponent } from './utils';
+import cloneDeep from 'lodash.clonedeep';
 // 单个组件类型
 export type ComponentInfoType = {
   fe_id: string;
@@ -15,12 +17,14 @@ export type ComponentInfoType = {
 export type ComponentsStateType = {
   componentList: ComponentInfoType[];
   selectedId: string;
+  copiedComponent: ComponentInfoType | null;
 };
 
 // 初始化组件列表
 const initialState: ComponentsStateType = {
   componentList: [],
   selectedId: '',
+  copiedComponent: null,
 };
 
 const componentsSlice = createSlice({
@@ -31,8 +35,9 @@ const componentsSlice = createSlice({
     resetComponents: (state, action) => {
       state.componentList = action.payload.componentList;
       state.selectedId = action.payload.selectedId;
+      state.copiedComponent = null;
     },
-    // 设置选中的组件
+    // 设置选中的组件id
     changeSelectedId: (state, action) => {
       state.selectedId = action.payload;
     },
@@ -41,20 +46,20 @@ const componentsSlice = createSlice({
       const newComponent = {
         ...action.payload,
       };
-
-      // 当前组件列表中寻找被选中的 id
-      const index = state.componentList.findIndex(
-        c => c.fe_id === state.selectedId
-      );
-      if (index < 0) {
-        // 如果未选中，则添加到组件列表中
-        state.componentList.push(newComponent);
-      } else {
-        // 如果选中，则插入到 index 后面
-        state.componentList.splice(index + 1, 0, newComponent);
-      }
-      // 更新选中 id
-      state.selectedId = newComponent.fe_id;
+      insertNewComponent(state, newComponent);
+      // // 当前组件列表中寻找被选中的 id
+      // const index = state.componentList.findIndex(
+      //   c => c.fe_id === state.selectedId
+      // );
+      // if (index < 0) {
+      //   // 如果未选中，则添加到组件列表中
+      //   state.componentList.push(newComponent);
+      // } else {
+      //   // 如果选中，则插入到 index 后面
+      //   state.componentList.splice(index + 1, 0, newComponent);
+      // }
+      // // 更新选中 id
+      // state.selectedId = newComponent.fe_id;
     },
 
     // 修改组件属性
@@ -93,7 +98,6 @@ const componentsSlice = createSlice({
       if (!targetComponent) return;
 
       // 重新计算 selectedId
-
       let newSelectedId = '';
       // 如果是隐藏当前组件，则选中下一个组件的 id
       if (targetComponent?.isHidden) {
@@ -118,6 +122,22 @@ const componentsSlice = createSlice({
       if (!targetComponent) return;
       targetComponent.isLocked = !targetComponent.isLocked;
     },
+    // 复制选中的组件存储到 redux
+    copySelectedComponent: state => {
+      const targetComponent = state.componentList.find(
+        c => c.fe_id === state.selectedId
+      );
+      if (!targetComponent) return;
+      state.copiedComponent = cloneDeep(targetComponent);
+    },
+    // 粘贴选中的组件
+    pasteCopiedComponent: state => {
+      if (!state.copiedComponent) return;
+      // 修改 copiedComponent 的 fe_id
+      state.copiedComponent.fe_id = nanoid();
+      // 插入组件
+      insertNewComponent(state, state.copiedComponent);
+    },
   },
 });
 
@@ -129,5 +149,7 @@ export const {
   deleteSelectedComponent,
   hideSelectedComponent,
   toggleSelectedComponentLock,
+  copySelectedComponent,
+  pasteCopiedComponent,
 } = componentsSlice.actions;
 export default componentsSlice.reducer;
