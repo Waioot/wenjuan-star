@@ -28,10 +28,15 @@ const componentsSlice = createSlice({
   reducers: {
     // 重置组件列表
     resetComponents: (state, action) => {
-      state.componentList = action.payload;
+      state.componentList = action.payload.componentList;
+      state.selectedId = action.payload.selectedId;
+    },
+    // 设置选中的组件
+    changeSelectedId: (state, action) => {
+      state.selectedId = action.payload;
     },
   },
 });
 
-export const { resetComponents } = componentsSlice.actions;
+export const { resetComponents, changeSelectedId } = componentsSlice.actions;
 export default componentsSlice.reducer;

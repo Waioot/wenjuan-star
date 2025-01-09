@@ -1,8 +1,12 @@
+import { MouseEvent } from 'react';
+import { Spin } from 'antd';
+import { useDispatch } from 'react-redux';
 import styles from './EditCavas.module.scss';
 import useGetComponentInfo from '../../../hooks/useGetComponentInfo';
+import classNames from 'classnames';
 import { ComponentInfoType } from '../../../store/componentsReducer';
-import { Spin } from 'antd';
 import { getComponentConfig } from '../../../components/Question';
+import { changeSelectedId } from '../../../store/componentsReducer';
 
 type EditCavasPropsType = {
   loading: boolean;
@@ -17,7 +21,12 @@ function getComponent(c: ComponentInfoType) {
 }
 
 function EditCavas({ loading }: EditCavasPropsType) {
-  const { componentList } = useGetComponentInfo();
+  const { componentList, selectedId } = useGetComponentInfo();
+  const dispatch = useDispatch();
+  function handleClick(event: MouseEvent, id: string) {
+    event.stopPropagation(); // 阻止事件冒泡
+    dispatch(changeSelectedId(id));
+  }
 
   if (loading)
     return (
@@ -30,7 +39,13 @@ function EditCavas({ loading }: EditCavasPropsType) {
       {componentList.map((c: ComponentInfoType) => {
         const { fe_id } = c;
         return (
-          <div className={styles['component-wrapper']} key={fe_id}>
+          <div
+            className={classNames(styles['component-wrapper'], {
+              [styles.selected]: fe_id === selectedId,
+            })}
+            key={fe_id}
+            onClick={e => handleClick(e, fe_id)}
+          >
             <div className={styles.components}>{getComponent(c)}</div>
           </div>
         );

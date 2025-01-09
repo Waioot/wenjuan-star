@@ -1,16 +1,22 @@
+import { useDispatch } from 'react-redux';
 import useLoadQuestionData from '../../../hooks/useLoadQuestionData';
 import EditCavas from './EditCavas';
 import styles from './index.module.scss';
+import { changeSelectedId } from '../../../store/componentsReducer';
 function Edit() {
   const { loading } = useLoadQuestionData();
+  const dispatch = useDispatch();
 
+  function clearSelected() {
+    dispatch(changeSelectedId(''));
+  }
   return (
     <div className={styles.container}>
       <div style={{ backgroundColor: '#fff', height: '60px' }}>header</div>
       <div className={styles['content-wrapper']}>
         <div className={styles.content}>
           <div className={styles.left}>left</div>
-          <div className={styles.main}>
+          <div className={styles.main} onClick={clearSelected}>
             <div className={styles['canvas-wrapper']}>
               <EditCavas loading={loading} />
             </div>
