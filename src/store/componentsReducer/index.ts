@@ -67,6 +67,14 @@ const componentsSlice = createSlice({
         };
       }
     },
+    // 删除画布中选中的组件
+    deleteSelectedComponent: state => {
+      const selectedIndex = state.componentList.findIndex(
+        c => c.fe_id === state.selectedId
+      );
+      if (selectedIndex < 0) return;
+      state.componentList.splice(selectedIndex, 1);
+    },
   },
 });
 
@@ -75,5 +83,6 @@ export const {
   changeSelectedId,
   addComponent,
   changeComponentProps,
+  deleteSelectedComponent,
 } = componentsSlice.actions;
 export default componentsSlice.reducer;
