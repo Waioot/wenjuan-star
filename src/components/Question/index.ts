@@ -11,6 +11,7 @@ export type ComponentConfigType = {
   title: string;
   type: string;
   Component: FC<ComponentPropsType>;
+  PropComponent: FC<ComponentPropsType>;
   defaultProps: ComponentPropsType;
 };
 
@@ -35,6 +36,6 @@ export const componentConfGroup = [
 ];
 
 // 根据组件类型获取组件配置
-export const getComponentConfig = (type: string) => {
+export const getComponentConfigByType = (type: string) => {
   return componentListMap.find(c => c.type === type);
 };
