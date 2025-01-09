@@ -2,17 +2,30 @@ import { Form, Input, Checkbox, Select } from 'antd';
 
 import { QuestionTitlePropsType } from './interface';
 import { useEffect } from 'react';
-function PropComponent({ text, level, isCenter }: QuestionTitlePropsType) {
+function PropComponent({
+  text,
+  level,
+  isCenter,
+  onChange,
+}: QuestionTitlePropsType) {
   const [form] = Form.useForm();
 
   useEffect(() => {
     form.setFieldsValue({ text, level, isCenter });
   }, [text, level, isCenter]);
+
+  const handleValuesChange = () => {
+    if (onChange) {
+      onChange(form.getFieldsValue());
+    }
+  };
+
   return (
     <Form
       layout='vertical'
       form={form}
       initialValues={{ text, level, isCenter }}
+      onValuesChange={handleValuesChange}
     >
       <Form.Item
         label='标题内容'
