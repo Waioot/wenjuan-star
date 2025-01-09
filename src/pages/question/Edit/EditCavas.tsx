@@ -39,11 +39,12 @@ function EditCavas({ loading }: EditCavasPropsType) {
       {componentList
         .filter(c => !c.isHidden)
         .map((c: ComponentInfoType) => {
-          const { fe_id } = c;
+          const { fe_id, isLocked } = c;
           return (
             <div
               className={classNames(styles['component-wrapper'], {
                 [styles.selected]: fe_id === selectedId,
+                [styles.locked]: isLocked,
               })}
               key={fe_id}
               onClick={e => handleClick(e, fe_id)}
