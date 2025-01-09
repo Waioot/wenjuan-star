@@ -5,6 +5,7 @@ import styles from './index.module.scss';
 import { changeSelectedId } from '../../../store/componentsReducer';
 import LeftPanel from './LeftPanel';
 import RightPanel from './RightPanel';
+import EditHeader from './EditHeader';
 function Edit() {
   const { loading } = useLoadQuestionData();
   const dispatch = useDispatch();
@@ -14,7 +15,7 @@ function Edit() {
   }
   return (
     <div className={styles.container}>
-      <div style={{ backgroundColor: '#fff', height: '60px' }}>header</div>
+      <EditHeader />
       <div className={styles['content-wrapper']}>
         <div className={styles.content}>
           <div className={styles.left}>
