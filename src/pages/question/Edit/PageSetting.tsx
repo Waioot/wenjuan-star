@@ -3,6 +3,7 @@ import { Form, Input } from 'antd';
 import useGetPageInfo from '../../../hooks/useGetPageInfo';
 import { useDispatch } from 'react-redux';
 import { resetPageInfo } from '../../../store/pageInfoReducer';
+
 const { TextArea } = Input;
 
 function PageSetting() {

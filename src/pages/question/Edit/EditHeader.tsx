@@ -1,10 +1,52 @@
+import { useState } from 'react';
 import styles from './EditHeader.module.scss';
-import { Button, Space } from 'antd';
-import { LeftOutlined } from '@ant-design/icons';
+import { Button, Space, Input } from 'antd';
+import { LeftOutlined, EditOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { Typography } from 'antd';
-import EditToolbar from './EditToolBar';
+import EditToolbar from './EditToolbar';
+import useGetPageInfo from '../../../hooks/useGetPageInfo';
+import { useDispatch } from 'react-redux';
+import { updatePageTitle } from '../../../store/pageInfoReducer';
+
 const { Title } = Typography;
+
+// 显示和修改标题组件
+function TitleComponent() {
+  const pageInfo = useGetPageInfo();
+  const { title } = pageInfo;
+
+  const dispatch = useDispatch();
+
+  const [isEdit, setIsEdit] = useState(false);
+
+  function handleChangeTitle(e: React.ChangeEvent<HTMLInputElement>) {
+    const newTitle = e.target.value.trim();
+    if (!newTitle) return;
+    dispatch(updatePageTitle(newTitle));
+  }
+
+  if (isEdit) {
+    return (
+      <Input
+        value={title}
+        onChange={handleChangeTitle}
+        onPressEnter={() => setIsEdit(false)}
+        onBlur={() => setIsEdit(false)}
+      />
+    );
+  }
+  return (
+    <Space>
+      <Title>{title}</Title>
+      <Button
+        type='link'
+        icon={<EditOutlined />}
+        onClick={() => setIsEdit(true)}
+      ></Button>
+    </Space>
+  );
+}
 
 function EditHeader() {
   const navigate = useNavigate();
@@ -21,7 +63,7 @@ function EditHeader() {
             <Button type='link' icon={<LeftOutlined />} onClick={handleBack}>
               返回
             </Button>
-            <Title>问卷标题</Title>
+            <TitleComponent />
           </Space>
         </div>
         <div className={styles.center}>

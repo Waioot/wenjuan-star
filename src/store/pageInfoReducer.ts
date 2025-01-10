@@ -21,8 +21,14 @@ const pageInfoSlice = createSlice({
     resetPageInfo: (state, action) => {
       return { ...state, ...action.payload };
     },
+    // 修改问卷信息的标题
+    updatePageTitle: (state, action) => {
+      if (state.title !== action.payload) {
+        state.title = action.payload;
+      }
+    },
   },
 });
 
-export const { resetPageInfo } = pageInfoSlice.actions;
+export const { resetPageInfo, updatePageTitle } = pageInfoSlice.actions;
 export default pageInfoSlice.reducer;
