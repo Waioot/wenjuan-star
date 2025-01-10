@@ -1,13 +1,17 @@
 import { useState } from 'react';
 import styles from './EditHeader.module.scss';
 import { Button, Space, Input } from 'antd';
-import { LeftOutlined, EditOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { LeftOutlined, EditOutlined, LoadingOutlined } from '@ant-design/icons';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Typography } from 'antd';
 import EditToolbar from './EditToolbar';
 import useGetPageInfo from '../../../hooks/useGetPageInfo';
 import { useDispatch } from 'react-redux';
 import { updatePageTitle } from '../../../store/pageInfoReducer';
+import useGetComponentInfo from '../../../hooks/useGetComponentInfo';
+import { updateQuestionService } from '../../../services/question';
+import { useRequest } from 'ahooks';
+import { useKeyPress } from 'ahooks';
 
 const { Title } = Typography;
 
@@ -48,6 +52,42 @@ function TitleComponent() {
   );
 }
 
+// 保存按钮组件
+function SaveButton() {
+  // id + pageinfo + componentList
+
+  const { id } = useParams();
+
+  const pageInfo = useGetPageInfo();
+  const { componentList = [] } = useGetComponentInfo();
+
+  const { loading, run: saveQuestion } = useRequest(
+    async () => {
+      if (!id) return;
+      await updateQuestionService(id, { ...pageInfo, componentList });
+    },
+    {
+      manual: true,
+    }
+  );
+
+  // 快捷键保存
+  useKeyPress(['ctrl.s', 'meta.s'], (e: KeyboardEvent) => {
+    e.preventDefault();
+    if (loading) return;
+    saveQuestion();
+  });
+  return (
+    <Button
+      onClick={saveQuestion}
+      disabled={loading}
+      icon={loading ? <LoadingOutlined /> : null}
+    >
+      保存
+    </Button>
+  );
+}
+
 function EditHeader() {
   const navigate = useNavigate();
 
@@ -71,7 +111,7 @@ function EditHeader() {
         </div>
         <div className={styles.right}>
           <Space>
-            <Button>保存</Button>
+            <SaveButton />
             <Button type='primary'>发布</Button>
           </Space>
         </div>
