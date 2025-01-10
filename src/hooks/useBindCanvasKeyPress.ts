@@ -10,7 +10,12 @@ import {
 
 function isActiveElement() {
   const activeElement = document.activeElement;
+  // 没有使用dnd-kit
+  // if (activeElement === document.body) return true;
+  // 使用dnd-kit后
   if (activeElement === document.body) return true;
+  // 使用dnd-kit 的 SortableItem
+  if (activeElement?.matches('div[role="button"]')) return true;
   return false;
 }
 
@@ -18,6 +23,7 @@ function useBindCanvasKeyPress() {
   const dispatch = useDispatch();
   // 删除
   useKeyPress(['backspace', 'delete'], () => {
+    console.log('delete');
     if (isActiveElement()) {
       dispatch(deleteSelectedComponent());
     }
