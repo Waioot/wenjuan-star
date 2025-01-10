@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styles from './EditHeader.module.scss';
-import { Button, Space, Input } from 'antd';
+import { Button, Space, Input, message } from 'antd';
 import { LeftOutlined, EditOutlined, LoadingOutlined } from '@ant-design/icons';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Typography } from 'antd';
@@ -101,6 +101,38 @@ function SaveButton() {
   );
 }
 
+// 发布按钮组件
+function PublishButton() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const pageInfo = useGetPageInfo();
+  const { componentList = [] } = useGetComponentInfo();
+
+  const { loading, run: publishQuestion } = useRequest(
+    async () => {
+      if (!id) return;
+      await updateQuestionService(id, {
+        ...pageInfo,
+        componentList,
+        isPublished: true, // 发布状态
+      });
+    },
+    {
+      manual: true,
+      onSuccess() {
+        message.success('发布成功');
+        // 跳转到统计页面
+        navigate(`/question/stat/${id}`);
+      },
+    }
+  );
+  return (
+    <Button type='primary' disabled={loading} onClick={publishQuestion}>
+      发布
+    </Button>
+  );
+}
+
 function EditHeader() {
   const navigate = useNavigate();
 
@@ -125,7 +157,7 @@ function EditHeader() {
         <div className={styles.right}>
           <Space>
             <SaveButton />
-            <Button type='primary'>发布</Button>
+            <PublishButton />
           </Space>
         </div>
       </div>
