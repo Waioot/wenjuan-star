@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux';
 import { updatePageTitle } from '../../../store/pageInfoReducer';
 import useGetComponentInfo from '../../../hooks/useGetComponentInfo';
 import { updateQuestionService } from '../../../services/question';
-import { useRequest } from 'ahooks';
+import { useDebounceEffect, useRequest } from 'ahooks';
 import { useKeyPress } from 'ahooks';
 
 const { Title } = Typography;
@@ -77,6 +77,19 @@ function SaveButton() {
     if (loading) return;
     saveQuestion();
   });
+
+  // 自动保存: 通过监听修改， 1s 保存一次
+  useDebounceEffect(
+    () => {
+      if (!loading) return;
+      saveQuestion();
+    },
+    [pageInfo, componentList],
+    {
+      wait: 5000,
+    }
+  );
+
   return (
     <Button
       onClick={saveQuestion}
