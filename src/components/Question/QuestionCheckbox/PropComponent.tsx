@@ -1,43 +1,44 @@
 import { Form, Input, Select, Checkbox, Button, Space } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { QuestionRadioPropsType, OptionType } from './interface';
+import { QuestionCheckboxPropsType, OptionType } from './interface';
 import { useEffect } from 'react';
 import { nanoid } from 'nanoid';
 function PropComponent({
   title,
   isVertical,
-  options = [],
-  value,
+  list = [],
   onChange,
   disabled,
-}: QuestionRadioPropsType) {
+}: QuestionCheckboxPropsType) {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    form.setFieldsValue({ title, isVertical, options, value });
-  }, [title, isVertical, options, value]);
+    form.setFieldsValue({ title, isVertical, list });
+  }, [title, isVertical, list]);
 
-  function handleValueChange() {
-    if (onChange) {
-      const newValues = form.getFieldsValue() as QuestionRadioPropsType;
-      // 过滤掉空选项
-      if (newValues.options) {
-        newValues.options = newValues.options
-          .filter(opt => !(opt.text === null))
-          .map(opt => ({
-            text: opt.text,
-            value: opt.value || nanoid(5),
-          }));
-      }
-      onChange(newValues);
+  function handleValuesChange() {
+    if (onChange == null) return;
+
+    const newValues = form.getFieldsValue() as QuestionCheckboxPropsType;
+
+    if (newValues.list) {
+      newValues.list = newValues.list.filter(opt => !(opt.text == null));
     }
+
+    const { list = [] } = newValues;
+    list.forEach(opt => {
+      if (opt.value) return;
+      opt.value = nanoid(5);
+    });
+
+    onChange(newValues);
   }
 
   return (
     <Form
       layout='vertical'
-      initialValues={{ title, isVertical, options, value }}
-      onValuesChange={handleValueChange}
+      initialValues={{ title, isVertical, list }}
+      onValuesChange={handleValuesChange}
       disabled={disabled}
       form={form}
     >
@@ -49,12 +50,16 @@ function PropComponent({
         <Input />
       </Form.Item>
 
-      <Form.Item label='选项' name='options'>
-        <Form.List name='options'>
+      <Form.Item label='选项' name='list'>
+        <Form.List name='list'>
           {(fields, { add, remove }) => (
             <>
               {fields.map(({ key, name }) => (
                 <Space key={key} align='baseline'>
+                  {/* 选项是否选中 */}
+                  <Form.Item name={[name, 'checked']} valuePropName='checked'>
+                    <Checkbox />
+                  </Form.Item>
                   {/* 选项输入 */}
                   <Form.Item
                     name={[name, 'text']}
@@ -62,9 +67,9 @@ function PropComponent({
                       { required: true, message: '请输入选项' },
                       {
                         validator: (_, text) => {
-                          const { options = [] } = form.getFieldsValue();
+                          const { list = [] } = form.getFieldsValue();
                           let num = 0;
-                          options.forEach((opt: OptionType) => {
+                          list.forEach((opt: OptionType) => {
                             if (opt.text === text) num++;
                           });
                           return num === 1
@@ -77,7 +82,7 @@ function PropComponent({
                     <Input />
                   </Form.Item>
                   {/* 删除选项 */}
-                  {fields.length > 2 && (
+                  {fields.length > 1 && (
                     <MinusCircleOutlined
                       onClick={() => {
                         remove(name);
@@ -90,7 +95,7 @@ function PropComponent({
               <Form.Item>
                 <Button
                   type='link'
-                  onClick={() => add({ text: '', value: nanoid(5) })}
+                  onClick={() => add({ text: '', value: '', checked: false })}
                   icon={<PlusOutlined />}
                   block
                 >
@@ -100,16 +105,6 @@ function PropComponent({
             </>
           )}
         </Form.List>
-      </Form.Item>
-
-      <Form.Item label='默认选中' name='value'>
-        <Select
-          value={value}
-          options={options.map(opt => ({
-            value: opt.value,
-            label: opt.text,
-          }))}
-        ></Select>
       </Form.Item>
 
       <Form.Item name='isVertical' valuePropName='checked'>
