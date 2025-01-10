@@ -5,6 +5,8 @@ import { resetComponents } from '../store/componentsReducer';
 import { useParams } from 'react-router-dom';
 import { getQuestionService } from '../services/question';
 import { useRequest } from 'ahooks';
+import { resetPageInfo } from '../store/pageInfoReducer';
+
 export default function useLoadQuestionData() {
   const { id = '' } = useParams();
   const dispatch = useDispatch();
@@ -29,7 +31,7 @@ export default function useLoadQuestionData() {
   // 将数据存储到redux中
   useEffect(() => {
     if (data) {
-      const { componentList } = data;
+      const { componentList, title, desc, js, css } = data;
 
       // 默认选中第一个
       let selectedId = '';
@@ -41,6 +43,9 @@ export default function useLoadQuestionData() {
       dispatch(
         resetComponents({ componentList, selectedId, copiedComponent: null })
       );
+
+      // 将pageInfo存储到redux中
+      dispatch(resetPageInfo({ title, desc, js, css }));
     }
   }, [data]);
 

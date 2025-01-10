@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Tabs } from 'antd';
 import { FileTextOutlined, SettingOutlined } from '@ant-design/icons';
 import ComponentProp from './ComponentProp';
-import PageSetting from './pageSetting';
+import PageSetting from './PageSetting';
 import useGetComponentInfo from '../../../hooks/useGetComponentInfo';
 
 enum TAB_KEYS {
