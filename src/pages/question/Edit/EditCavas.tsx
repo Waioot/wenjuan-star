@@ -8,7 +8,9 @@ import { ComponentInfoType } from '../../../store/componentsReducer';
 import { getComponentConfigByType } from '../../../components/Question';
 import { changeSelectedId } from '../../../store/componentsReducer';
 import useBindCanvasKeyPress from '../../../hooks/useBindCanvasKeyPress';
-
+import { moveComponent } from '../../../store/componentsReducer';
+import SortableContainer from '../../../components/DragSortable/SortableContainer';
+import SortableItem from '../../../components/DragSortable/SortableItem';
 type EditCavasPropsType = {
   loading: boolean;
 };
@@ -38,26 +40,40 @@ function EditCavas({ loading }: EditCavasPropsType) {
         <Spin />
       </div>
     );
+
+  // 拖拽排序结束
+  function handleDragEnd(oldIndex: number, newIndex: number) {
+    dispatch(moveComponent({ oldIndex, newIndex }));
+  }
+
+  // SortableContainer 组件的 items 属性，需要每个 item 都有 id
+  const componentListWithId = componentList.map(c => {
+    return { ...c, id: c.fe_id };
+  });
   return (
-    <div className={styles.cavas}>
-      {componentList
-        .filter(c => !c.isHidden)
-        .map((c: ComponentInfoType) => {
-          const { fe_id, isLocked } = c;
-          return (
-            <div
-              className={classNames(styles['component-wrapper'], {
-                [styles.selected]: fe_id === selectedId,
-                [styles.locked]: isLocked,
-              })}
-              key={fe_id}
-              onClick={e => handleClick(e, fe_id)}
-            >
-              <div className={styles.components}>{getComponent(c)}</div>
-            </div>
-          );
-        })}
-    </div>
+    <SortableContainer items={componentListWithId} onDragEnd={handleDragEnd}>
+      <div className={styles.cavas}>
+        {componentList
+          .filter(c => !c.isHidden)
+          .map((c: ComponentInfoType) => {
+            const { fe_id, isLocked } = c;
+            return (
+              <SortableItem id={fe_id} key={fe_id}>
+                <div
+                  className={classNames(styles['component-wrapper'], {
+                    [styles.selected]: fe_id === selectedId,
+                    [styles.locked]: isLocked,
+                  })}
+                  key={fe_id}
+                  onClick={e => handleClick(e, fe_id)}
+                >
+                  <div className={styles.components}>{getComponent(c)}</div>
+                </div>
+              </SortableItem>
+            );
+          })}
+      </div>
+    </SortableContainer>
   );
 }
 
