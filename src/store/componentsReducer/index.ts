@@ -92,6 +92,7 @@ const componentsSlice = createSlice({
     },
     // 隐藏/显示 选中的组件
     hideSelectedComponent: state => {
+      if (!state.selectedId) return;
       const targetComponent = state.componentList.find(
         c => c.fe_id === state.selectedId
       );
@@ -116,6 +117,7 @@ const componentsSlice = createSlice({
     },
     // 锁定/解锁 选中的组件
     toggleSelectedComponentLock: state => {
+      if (!state.selectedId) return;
       const targetComponent = state.componentList.find(
         c => c.fe_id === state.selectedId
       );
@@ -158,6 +160,15 @@ const componentsSlice = createSlice({
       if (selectedIndex + 1 === state.componentList.length) return; // 如果当前组件是最后一个组件，则不进行任何操作
       state.selectedId = state.componentList[selectedIndex + 1].fe_id;
     },
+
+    // 修改组件标题
+    changeComponentTitle: (state, action) => {
+      const { fe_id, title } = action.payload;
+      const targetComponent = state.componentList.find(c => c.fe_id === fe_id);
+      if (!targetComponent) return;
+      targetComponent.title = title;
+    },
+
     // TODO 上移、下移、撤销、重做
   },
 });
@@ -174,5 +185,6 @@ export const {
   pasteCopiedComponent,
   selectPrevComponent,
   selectNextComponent,
+  changeComponentTitle,
 } = componentsSlice.actions;
 export default componentsSlice.reducer;

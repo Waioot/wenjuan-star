@@ -1,6 +1,7 @@
 import { Tabs } from 'antd';
 import { AppstoreAddOutlined, BarsOutlined } from '@ant-design/icons';
 import Lib from './ComponentLib';
+import Layers from './Layers';
 function LeftPanel() {
   const tabItems = [
     {
@@ -13,7 +14,7 @@ function LeftPanel() {
       label: '图层',
       key: 'layers',
       icon: <BarsOutlined />,
-      children: <div>图层</div>,
+      children: <Layers />,
     },
   ];
   return (
