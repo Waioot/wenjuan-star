@@ -8,13 +8,14 @@ import QuestionInfoConf, { QuestionInfoPropsType } from './QuestionInfo';
 import QuestionTextareaConf, {
   QuestionTextareaPropsType,
 } from './QuestionTextarea';
-
+import QuestionRadioConf, { QuestionRadioPropsType } from './QuestionRadio';
 // 统一的组件属性类型
 export type ComponentPropsType = QuestionTitlePropsType &
   QuestionInputPropsType &
   QuestionParagraphPropsType &
   QuestionInfoPropsType &
-  QuestionTextareaPropsType;
+  QuestionTextareaPropsType &
+  QuestionRadioPropsType;
 
 // 统一的组件配置类型
 export type ComponentConfigType = {
@@ -32,19 +33,25 @@ export const componentListMap: ComponentConfigType[] = [
   QuestionParagraphConf,
   QuestionInfoConf,
   QuestionTextareaConf,
+  QuestionRadioConf,
 ];
 
 // 组件分组
 export const componentConfGroup = [
   {
-    groupId: 'textDisplay',
+    groupId: 'textDisplayGroup',
     groupName: '文本显示',
     components: [QuestionInfoConf, QuestionTitleConf, QuestionParagraphConf],
   },
   {
-    groupId: 'userInput',
+    groupId: 'userInputGroup',
     groupName: '用户输入',
     components: [QuestionInputConf, QuestionTextareaConf],
+  },
+  {
+    groupId: 'choiceGroup',
+    groupName: '选择题',
+    components: [QuestionRadioConf],
   },
 ];
 
