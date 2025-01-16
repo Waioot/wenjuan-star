@@ -1,4 +1,5 @@
 import { Space, Tooltip, Button } from 'antd';
+import { ActionCreators as UndoActionCreators } from 'redux-undo';
 import {
   DeleteOutlined,
   EyeInvisibleOutlined,
@@ -7,6 +8,8 @@ import {
   BlockOutlined,
   UpOutlined,
   DownOutlined,
+  UndoOutlined,
+  RedoOutlined,
 } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
 import {
@@ -76,7 +79,14 @@ const EditToolbar = () => {
     }
   }
 
-  // TODO 、撤销、重做
+  // 撤销
+  function handleUndo() {
+    dispatch(UndoActionCreators.undo());
+  }
+  // 重做
+  function handleRedo() {
+    dispatch(UndoActionCreators.redo());
+  }
 
   return (
     <Space>
@@ -138,6 +148,23 @@ const EditToolbar = () => {
           icon={<DownOutlined />}
           onClick={() => handleMove('down')}
           disabled={isLast}
+        />
+      </Tooltip>
+
+      <Tooltip title='撤销'>
+        <Button
+          shape='circle'
+          type='link'
+          icon={<UndoOutlined />}
+          onClick={handleUndo}
+        />
+      </Tooltip>
+      <Tooltip title='重做'>
+        <Button
+          shape='circle'
+          type='link'
+          icon={<RedoOutlined />}
+          onClick={handleRedo}
         />
       </Tooltip>
     </Space>
