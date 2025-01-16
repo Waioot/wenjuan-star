@@ -6,9 +6,14 @@ import { changeSelectedId } from '../../../store/componentsReducer';
 import LeftPanel from './LeftPanel';
 import RightPanel from './RightPanel';
 import EditHeader from './EditHeader';
+import useGetPageInfo from '../../../hooks/useGetPageInfo';
+import { useTitle } from 'ahooks';
+
 function Edit() {
   const { loading } = useLoadQuestionData();
   const dispatch = useDispatch();
+  const { title } = useGetPageInfo();
+  useTitle(`问卷编辑 - ${title}`);
 
   function clearSelected() {
     dispatch(changeSelectedId(''));

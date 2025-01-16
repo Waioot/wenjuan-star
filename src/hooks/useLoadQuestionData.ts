@@ -31,7 +31,7 @@ export default function useLoadQuestionData() {
   // 将数据存储到redux中
   useEffect(() => {
     if (data) {
-      const { componentList, title, desc, js, css } = data;
+      const { componentList, title, desc, js, css, isPublished = false } = data;
 
       // 默认选中第一个
       let selectedId = '';
@@ -45,7 +45,7 @@ export default function useLoadQuestionData() {
       );
 
       // 将pageInfo存储到redux中
-      dispatch(resetPageInfo({ title, desc, js, css }));
+      dispatch(resetPageInfo({ title, desc, js, css, isPublished }));
     }
   }, [data]);
 

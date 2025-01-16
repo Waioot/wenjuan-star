@@ -17,7 +17,7 @@ export default defineConfig({
 
   server: {
     open: true, // 是否自动打开浏览器
-    port: 3000, // 端口号
+    port: 8000, // 端口号 b端用 8000 c端用 3000
 
     // 代理解决跨域
     proxy: {
