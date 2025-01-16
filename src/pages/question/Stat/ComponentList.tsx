@@ -6,14 +6,12 @@ import classNames from 'classnames';
 type PropsType = {
   selectedComponentId: string;
   setSelectedComponentId: (id: string) => void;
-  selectedComponentType: string;
   setSelectedComponentType: (type: string) => void;
 };
 
 function ComponentList({
   selectedComponentId,
   setSelectedComponentId,
-  //   selectedComponentType,
   setSelectedComponentType,
 }: PropsType) {
   const { componentList } = useGetComponentInfo();

@@ -8,6 +8,7 @@ import useLoadQuestionData from '../../../hooks/useLoadQuestionData';
 import useGetPageInfo from '../../../hooks/useGetPageInfo';
 import styles from './index.module.scss';
 import ComponentList from './ComponentList';
+import PageStat from './PageStat';
 
 function Stat() {
   const { loading } = useLoadQuestionData();
@@ -46,11 +47,16 @@ function Stat() {
           <ComponentList
             selectedComponentId={selectedComponentId}
             setSelectedComponentId={setSelectedComponentId}
-            selectedComponentType={selectedComponentType}
             setSelectedComponentType={setSelectedComponentType}
           />
         </div>
-        <div className={styles.main}>main</div>
+        <div className={styles.main}>
+          <PageStat
+            selectedComponentId={selectedComponentId}
+            setSelectedComponentId={setSelectedComponentId}
+            setSelectedComponentType={setSelectedComponentType}
+          />
+        </div>
         <div className={styles.right}>right</div>
       </>
     );
