@@ -9,6 +9,7 @@ import useGetPageInfo from '../../../hooks/useGetPageInfo';
 import styles from './index.module.scss';
 import ComponentList from './ComponentList';
 import PageStat from './PageStat';
+import ChartStat from './ChartStat';
 
 function Stat() {
   const { loading } = useLoadQuestionData();
@@ -57,7 +58,12 @@ function Stat() {
             setSelectedComponentType={setSelectedComponentType}
           />
         </div>
-        <div className={styles.right}>right</div>
+        <div className={styles.right}>
+          <ChartStat
+            selectedComponentId={selectedComponentId}
+            selectedComponentType={selectedComponentType}
+          />
+        </div>
       </>
     );
   }
