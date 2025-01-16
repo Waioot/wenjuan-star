@@ -1,14 +1,20 @@
 import { Button, Result, Spin } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useTitle } from 'ahooks';
+import { useState } from 'react';
 
 import StatHeader from './StatHeader';
 import useLoadQuestionData from '../../../hooks/useLoadQuestionData';
 import useGetPageInfo from '../../../hooks/useGetPageInfo';
 import styles from './index.module.scss';
+import ComponentList from './ComponentList';
+
 function Stat() {
   const { loading } = useLoadQuestionData();
   const { title, isPublished } = useGetPageInfo();
+  const [selectedComponentId, setSelectedComponentId] = useState('');
+  const [selectedComponentType, setSelectedComponentType] = useState('');
+
   useTitle(`问卷统计 - ${title}`);
   const navigate = useNavigate();
 
@@ -36,7 +42,14 @@ function Stat() {
     }
     return (
       <>
-        <div className={styles.left}>left</div>
+        <div className={styles.left}>
+          <ComponentList
+            selectedComponentId={selectedComponentId}
+            setSelectedComponentId={setSelectedComponentId}
+            selectedComponentType={selectedComponentType}
+            setSelectedComponentType={setSelectedComponentType}
+          />
+        </div>
         <div className={styles.main}>main</div>
         <div className={styles.right}>right</div>
       </>
