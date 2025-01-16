@@ -8,12 +8,16 @@ import QuestionInfoConf, { QuestionInfoPropsType } from './QuestionInfo';
 import QuestionTextareaConf, {
   QuestionTextareaPropsType,
 } from './QuestionTextarea';
-import QuestionRadioConf, { QuestionRadioPropsType } from './QuestionRadio';
+import QuestionRadioConf, {
+  QuestionRadioPropsType,
+  QuestionRadioStatPropsType,
+} from './QuestionRadio';
 import QuestionCheckboxConf, {
   QuestionCheckboxPropsType,
+  QuestionCheckboxStatPropsType,
 } from './QuestionCheckbox';
 
-// 统一的组件属性类型
+// 统一，各个组件的属性类型
 export type ComponentPropsType = QuestionTitlePropsType &
   QuestionInputPropsType &
   QuestionParagraphPropsType &
@@ -22,6 +26,10 @@ export type ComponentPropsType = QuestionTitlePropsType &
   QuestionRadioPropsType &
   QuestionCheckboxPropsType;
 
+// 统一，各统计图表组件的属性类型
+type ComponentStatPropsType = QuestionRadioStatPropsType &
+  QuestionCheckboxStatPropsType;
+
 // 统一的组件配置类型
 export type ComponentConfigType = {
   title: string;
@@ -29,6 +37,8 @@ export type ComponentConfigType = {
   Component: FC<ComponentPropsType>;
   PropComponent: FC<ComponentPropsType>;
   defaultProps: ComponentPropsType;
+  // 统计图表组件 单选、多选这些存在
+  StatComponent?: FC<ComponentStatPropsType>;
 };
 
 // 全部组件的配置列表
