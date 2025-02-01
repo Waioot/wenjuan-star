@@ -15,7 +15,7 @@ import {
   QrcodeOutlined,
 } from '@ant-design/icons';
 import { Typography } from 'antd';
-
+import { useMemo } from 'react';
 import styles from './StatHeader.module.scss';
 import useGetPageInfo from '../../../hooks/useGetPageInfo';
 import { useRef } from 'react';
@@ -38,7 +38,29 @@ function StatHeader() {
     message.success('复制成功');
   }
 
-  function genLinkAndQRCode() {
+  // function genLinkAndQRCode() {
+  //   if (!isPublished) return null;
+  //   const url = `http://localhost:3000/question/stat/${id}`; // 生成问卷链接 参考 c 端的规则
+  //   return (
+  //     <Space>
+  //       <Input value={url} style={{ width: '300px' }} ref={urlRef} />
+  //       <Tooltip title='复制链接'>
+  //         <Button
+  //           type='primary'
+  //           icon={<CopyOutlined />}
+  //           onClick={() => copy()}
+  //         ></Button>
+  //       </Tooltip>
+
+  //       <Popover content={<QRCode value={url} bordered={false} />}>
+  //         <Button type='primary' icon={<QrcodeOutlined />} />
+  //       </Popover>
+  //     </Space>
+  //   );
+  // }
+
+  // 使用 useMemo 优化
+  const genLinkAndQRCode = useMemo(() => {
     if (!isPublished) return null;
     const url = `http://localhost:3000/question/stat/${id}`; // 生成问卷链接 参考 c 端的规则
     return (
@@ -51,13 +73,12 @@ function StatHeader() {
             onClick={() => copy()}
           ></Button>
         </Tooltip>
-
         <Popover content={<QRCode value={url} bordered={false} />}>
           <Button type='primary' icon={<QrcodeOutlined />} />
         </Popover>
       </Space>
     );
-  }
+  }, [isPublished, id]);
 
   return (
     <div className={styles['header-wrapper']}>
@@ -74,7 +95,7 @@ function StatHeader() {
             <Title>{title}</Title>
           </Space>
         </div>
-        <div className={styles.main}>{genLinkAndQRCode()}</div>
+        <div className={styles.main}>{genLinkAndQRCode}</div>
         <div className={styles.right}>
           <Button
             type='primary'
