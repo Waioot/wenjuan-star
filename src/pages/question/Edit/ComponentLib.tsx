@@ -9,7 +9,7 @@ import { Typography } from 'antd';
 import styles from './ComponentLib.module.scss';
 const { Title } = Typography;
 
-function genComponent(c: ComponentConfigType) {
+function GenComponent(c: ComponentConfigType) {
   const { Component, title, type, defaultProps } = c;
   const dispatch = useDispatch();
   const handleClick = () => {
@@ -22,6 +22,7 @@ function genComponent(c: ComponentConfigType) {
       })
     );
   };
+
   return (
     <div key={type} className={styles.wapper} onClick={handleClick}>
       <div className={styles.component}>
@@ -42,7 +43,7 @@ function Lib() {
           >
             {group.groupName}
           </Title>
-          <div>{group.components.map(c => genComponent(c))}</div>
+          <div>{group.components.map(c => GenComponent(c))}</div>
         </div>
       ))}
     </>
