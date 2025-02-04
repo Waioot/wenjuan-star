@@ -28,7 +28,7 @@ function PropComponent({
       disabled={disabled}
     >
       <Form.Item
-        label='标题'
+        label='输入框标题'
         name='title'
         rules={[{ required: true, message: '请输入标题' }]}
       >

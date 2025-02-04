@@ -4,7 +4,7 @@ import { QuestionInputPropsType } from './interface';
 const { Paragraph } = Typography;
 
 function QuestionInput({
-  title = '单行输入框',
+  title = '输入框标题',
   placeholder = '请输入...',
 }: QuestionInputPropsType) {
   return (
