@@ -1,12 +1,12 @@
 import { message } from 'antd';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 const instance = axios.create({
   timeout: 5000,
 });
 
 // response interceptor: 拦截响应数据，统一处理
-instance.interceptors.response.use(res => {
+instance.interceptors.response.use((res: AxiosResponse) => {
   const resData = (res.data || {}) as ResType;
   const { errno, data, msg } = resData;
   if (errno !== 0) {
@@ -15,7 +15,9 @@ instance.interceptors.response.use(res => {
     }
     throw new Error(msg);
   }
-  return data as ResDataType;
+  // 修改返回值，包装在 res 对象中
+  res.data = data;
+  return res;
 });
 
 export default instance;

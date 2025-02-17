@@ -1,4 +1,4 @@
-import { Form, Input, Select, Checkbox, Button, Space } from 'antd';
+import { Form, Input, Checkbox, Button, Space } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { QuestionCheckboxPropsType, OptionType } from './interface';
 import { useEffect } from 'react';

@@ -30,7 +30,7 @@ function StateComponent({ stat = [] }: StatComponentPropsType) {
             label={({ name, count }) => `${name}: ${getPercent(count, sum)}%`}
             labelLine={false}
           >
-            {stat.map((entry, index) => (
+            {stat.map((_, index) => (
               <Cell key={`cell-${index}`} fill={STAT_CHART_COLORS[index]} />
             ))}
           </Pie>
